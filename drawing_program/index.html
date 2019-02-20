@@ -2,17 +2,36 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" charset="utf-8">
         <title>
             Draw Something!
         </title>
         <link rel="stylesheet" href="style.css"
     </head>
     <body>
-        <canvas id="canvas" height="720" width="1280"></canvas>
+
+        <canvas id="canvas" height="480" width="920"></canvas>
         <div class="brush-params">
-            
+
+            <div class="slide-container">
+                <label for="brush-size" id="brush-label">Brush Size: 10</label>
+                <input type="range" min="1" max="100" value="10" class="slider" id="brush-size">
+            </div>
+
+            <div class="color-container">
+                <label for="color-input" id="color-label">HEX Color: #000000</label>
+                <input type="text" id="color-input" value="#000000"> Press enter to change
+            </div>
+
+            <div class="brush-type">
+                <label for="brush-square">Square</label>
+                <input name="brush-type" brush="square" id="brush-square" type="radio" checked="true">
+                <label for="brush-circle">Circle</label>
+                <input name="brush-type" brush="circle" id="brush-circle" type="radio">
+            </div>
+
         </div>
         <script src="draw.js"></script>
+
     </body>
 </html> 
