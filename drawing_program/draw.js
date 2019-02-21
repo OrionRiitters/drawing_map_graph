@@ -5,13 +5,17 @@ let sliderLabel = document.getElementById('brush-label');
 let brushColor = document.getElementById('color-input');
 let brushCircle = document.getElementById('brush-circle');
 let brushSquare = document.getElementById('brush-square');
+let undoBtn = document.getElementById('undo-btn');
 let isMouseDown = false;
+let consecutiveUndo = false;
 
 let brush = {
     radius: 10,
     strokeType: 'square',
     color: '#000000'
 };
+
+let frameStack = [ctx.getImageData(0, 0, canvas.width, canvas.height)];
 
 canvas.addEventListener('mousedown', () => {
     isMouseDown = true;
@@ -21,7 +25,11 @@ canvas.addEventListener('mousemove', () => {
     if (isMouseDown) draw();
 });
 
-canvas.addEventListener('mouseup', () => isMouseDown = false);
+canvas.addEventListener('mouseup', () => {
+    isMouseDown = false;
+    frameStack.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+    consecutiveUndo = false;
+});
 
 slider.oninput = () => {
     sliderLabel.innerHTML = 'Brush Size: ' + slider.value;
@@ -39,6 +47,16 @@ brushCircle.addEventListener('click', function() {
 
 brushSquare.addEventListener('click', function() {
     brush.strokeType = this.getAttribute('brush');
+});
+
+undoBtn.addEventListener('click', () => {
+    if (!consecutiveUndo) frameStack.pop();
+    ctx.putImageData(frameStack.pop(), 0, 0);
+
+    if (frameStack.length == 0) {
+        frameStack.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+    }
+    consecutiveUndo = true;
 });
 
 function draw() {
